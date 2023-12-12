@@ -3,11 +3,13 @@ package com.shubham.susp.applist;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shubham.susp.R;
+import com.shubham.susp.report;
 
 import java.util.ArrayList;
 
@@ -32,6 +34,7 @@ public class adapter extends RecyclerView.Adapter<holder> {
         holder.appname.setText(app.getAppname());
         holder.category.setText(app.getCategory());
         holder.logo.setImageDrawable(app.getApplogo());
+
     }
 
     @Override

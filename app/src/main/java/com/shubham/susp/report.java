@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +35,8 @@ ImageView back;
         back = findViewById(R.id.back);
         recyclerView = findViewById(R.id.recyclerView);
 
-        list = getapps(list);
+
+                list = getapps(list);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,10 +63,10 @@ ImageView back;
         for (ApplicationInfo packageinfo :
                 packages) {
           if ((packageinfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0)
-                continue;
-          else
+              continue;
+             else
           {
-                appinfo app  = new appinfo((String) packageManager.getApplicationLabel(packageinfo), packageManager.getApplicationIcon(packageinfo),null);
+                appinfo app  = new appinfo((String) packageManager.getApplicationLabel(packageinfo), packageManager.getApplicationIcon(packageinfo),packageinfo.packageName);
                 list.add(app);
             }
 
@@ -71,5 +74,30 @@ ImageView back;
 
         return list;
 
+    }
+
+    public void onDeleteClick(int position )
+    {
+        appinfo apptodelte = list.get(position);
+        String packageTodelete = apptodelte.getAppname();
+
+        PackageManager pm = getPackageManager();
+        List<ApplicationInfo> packages = pm.getInstalledApplications(pm.GET_META_DATA);
+        for (ApplicationInfo packaeinfo: packages) {
+            if(packaeinfo.packageName.equals(packageTodelete))
+            {
+                deleteApp(packaeinfo);
+
+
+            }
+
+        }
+    }
+
+    public void deleteApp(ApplicationInfo app)
+    {
+        Intent delete = new Intent(Intent.ACTION_DELETE);
+        delete.setData(Uri.parse("Package name : "+ app.packageName));
+        startActivity(delete);
     }
 }
